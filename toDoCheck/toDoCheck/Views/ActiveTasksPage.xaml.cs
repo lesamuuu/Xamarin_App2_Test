@@ -8,23 +8,22 @@ namespace toDoCheck.Views
 {	
 	public partial class ActiveTasksPage : ContentPage
 	{
-     
-		public ActiveTasksPage ()
+        public ActiveTasksPage ()
 		{
 			InitializeComponent ();
 		}
 
         protected override void OnAppearing()
         {
-            LoadActiveItems();
             base.OnAppearing();
-            
+            LoadActiveItems();
         }
 
         private async void LoadActiveItems()
         {
             var items = await App.Context.GetItemsAsync();
-            ToDoItemsActive.ItemsSource = items.Where(x => x.StatusCompleted == false);
+            ToDoItemsActive.ItemsSource = items.Where(x => x.StatusCompleted == false).ToList();
+            ItemCountActive.Text = items.Count(x => x.StatusCompleted == false).ToString() + " Items";
         }
 
         async void CheckBox_TaskStatus_CheckedChanged(object sender, CheckedChangedEventArgs e)

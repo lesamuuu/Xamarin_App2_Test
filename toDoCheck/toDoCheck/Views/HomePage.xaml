@@ -5,50 +5,90 @@
     Title="To Do"
     x:Class="toDoCheck.Views.HomePage">
 
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Text="{Binding itemCount}"></ToolbarItem>
-        <ToolbarItem Text="All" Clicked="ToolbarItem_All_Clicked"></ToolbarItem>
-        <ToolbarItem Text="Active" Clicked="ToolbarItem_Active_Clicked"></ToolbarItem>
-        <ToolbarItem Text="Completed" Clicked="ToolbarItem_Completed_Clicked"></ToolbarItem>
-        <ToolbarItem Text="Clear Completed" Clicked="ToolbarItem_ClearCompleted_Clicked"></ToolbarItem>
-    </ContentPage.ToolbarItems>-->
-    
     <ContentPage.Content>
-        <StackLayout BackgroundColor="LightGray">
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Padding="20,40">
 
             <!--Title-->
-            <Label FontSize="Title" Padding="0,20" HorizontalTextAlignment="Center">To Do</Label>
+            <Label Text="To Do" FontSize="36" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" TextColor="{StaticResource PrimaryColor}"/>
 
-            <!--New Task-->
-            <Entry x:Name="TaskDescription" Placeholder="Insert your task here" Margin="10,0" Completed="TaskDescription_Completed"></Entry>
+            <!--New Task Entry-->
+            <Frame CornerRadius="12" 
+                HasShadow="true" 
+                Padding="0" 
+                BackgroundColor="{StaticResource SurfaceColor}">
+                <Entry x:Name="TaskDescription" 
+                   Placeholder="Insert your task here" 
+                   Margin="10,0" 
+                   Completed="TaskDescription_Completed" 
+                   BackgroundColor="{StaticResource SurfaceColor}"
+                   TextColor="{StaticResource PrimaryTextColor}"
+                   PlaceholderColor="{StaticResource SecondaryTextColor}"/>
+            </Frame>
 
-            <!--List-->
-            <ListView x:Name="ToDoItems">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!--Item Count-->
+                <Frame  Grid.Column="0"
+                        CornerRadius="12" 
+                        HasShadow="true" 
+                        Padding="5"
+                        VerticalOptions="Center"
+                        BackgroundColor="{StaticResource PrimaryLightColor}"
+                        HorizontalOptions="Start">
+                    <Label x:Name="ItemCount" 
+                           TextColor="{StaticResource PrimaryTextColor}"
+                           FontSize="Medium"
+                           Padding="10,0"/>
+                </Frame>
+
+                <!--Delete Complete Button-->
+                <Button Grid.Column="1"
+                        Text="Clear completed"
+                        CornerRadius="15"
+                        HorizontalOptions="End"
+                        Clicked="Button_ClearCompleted_Clicked">
+                </Button>
+            </Grid>
+            
+            
+
+            <!--Task List-->
+            <ListView x:Name="ToDoItems" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ViewCell.ContextActions>
-                                <!--<MenuItem x:Name="BtnDelete"
-                                          Text="Eliminar"
-                                          IsDestructive="True"
-                                          Clicked="BtnDelete_Clicked"
-                                          CommandParameter="{Binding .}">
-                                </MenuItem>-->
-                            </ViewCell.ContextActions>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*" ></ColumnDefinition>
-                                    <ColumnDefinition Width="90*" ></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
+                            <Frame Padding="10" CornerRadius="10" HasShadow="True" BackgroundColor="{StaticResource SurfaceColor}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <CheckBox Grid.Column="0" IsChecked="{Binding StatusCompleted}" CheckedChanged="CheckBox_TaskStatus_CheckedChanged"></CheckBox>
-                                <Label Grid.Column="1" Text="{Binding ToDoTask}" FontSize="Medium" VerticalOptions="Center"></Label>
-                            </Grid>
+                                    <!-- CheckBox -->
+                                    <CheckBox Grid.Column="0" 
+                                              IsChecked="{Binding StatusCompleted}" 
+                                              VerticalOptions="Center"
+                                              CheckedChanged="CheckBox_TaskStatus_CheckedChanged">
+                                    </CheckBox>
+
+                                    <!-- Task Description -->
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding ToDoTask}" 
+                                           FontSize="Medium" 
+                                           VerticalOptions="Center" 
+                                           TextColor="{StaticResource PrimaryTextColor}"/>
+                                </Grid>
+                            </Frame>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-         </StackLayout>
-
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
