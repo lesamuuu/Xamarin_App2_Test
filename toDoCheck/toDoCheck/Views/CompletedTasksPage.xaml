@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="toDoCheck.Views.CompletedTasksPage">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="LightGray">
+            <!--Title-->
+            <Label FontSize="Title" Padding="0,20" HorizontalTextAlignment="Center">To Do</Label>
+            <!--List-->
+            <ListView x:Name="ToDoItemsCompleted">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*" ></ColumnDefinition>
+                                    <ColumnDefinition Width="90*" ></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0" IsChecked="{Binding StatusCompleted}" CheckedChanged="CheckBox_TaskStatus_CheckedChanged"></CheckBox>
+                                <Label Grid.Column="1" Text="{Binding ToDoTask}" FontSize="Medium" VerticalOptions="Center"></Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+         </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+
