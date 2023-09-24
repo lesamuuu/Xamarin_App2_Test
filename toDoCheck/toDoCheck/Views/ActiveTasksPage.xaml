@@ -2,7 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Behaviors="clr-namespace:toDoCheck.Views.Behaviors"
     Title="To Do"
+    x:Name="MyActiveTasksPage"
     x:Class="toDoCheck.Views.ActiveTasksPage">
 
     <ContentPage.Content>
@@ -16,7 +18,7 @@
                 Padding="5" 
                 BackgroundColor="{StaticResource PrimaryLightColor}"
                 HorizontalOptions="Start">
-                <Label x:Name="ItemCountActive" 
+                <Label Text="{Binding ItemsCountActive_Label}"
                        TextColor="{StaticResource PrimaryTextColor}"
                        FontSize="Medium"
                        Padding="10,0"/>
@@ -24,7 +26,7 @@
             
 
             <!--Task List-->
-            <ListView x:Name="ToDoItemsActive" VerticalOptions="FillAndExpand">
+            <ListView ItemsSource="{Binding ToDoItemActive_ListView}" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -38,8 +40,13 @@
                                     <!-- CheckBox -->
                                     <CheckBox Grid.Column="0" 
                                               IsChecked="{Binding StatusCompleted}" 
-                                              VerticalOptions="Center"
-                                              CheckedChanged="CheckBox_TaskStatus_CheckedChanged">
+                                              VerticalOptions="Center">
+                                        <CheckBox.Behaviors>
+                                            <Behaviors:CheckBoxCheckedChangedBehavior
+                                                Command="{Binding Source={x:Reference MyActiveTasksPage},
+                                                          Path =BindingContext.CheckBoxChangedCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </CheckBox.Behaviors>
                                     </CheckBox>
 
                                     <!-- Task Description -->

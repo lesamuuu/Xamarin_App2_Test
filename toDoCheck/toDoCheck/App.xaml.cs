@@ -1,27 +1,17 @@
-﻿using System;
-using toDoCheck.Data;
+﻿using toDoCheck.Services;
 using toDoCheck.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace toDoCheck
 {
     public partial class App : Application
     {
-        public static DatabaseContext Context { get; set; }
 
         public App ()
         {
             InitializeComponent();
-            InitializeDatabase();
+            DependencyService.Register<ToDoItemDBService>();
             MainPage = new TaskTabs();
-        }
-
-        private void InitializeDatabase()
-        {
-            var folderApp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbPath = System.IO.Path.Combine(folderApp, "ToDoItems.db3");
-            Context = new DatabaseContext(dbPath);
         }
 
         protected override void OnStart ()
@@ -34,9 +24,7 @@ namespace toDoCheck
 
         protected override void OnResume ()
         {
-        }
-
-        
+        } 
     }
 }
 

@@ -2,7 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Behaviors="clr-namespace:toDoCheck.Views.Behaviors"
     Title="To Do"
+    x:Name="MyCompletedTasksPage"
     x:Class="toDoCheck.Views.CompletedTasksPage">
 
     <ContentPage.Content>
@@ -27,7 +29,7 @@
                         VerticalOptions="Center"
                         BackgroundColor="{StaticResource PrimaryLightColor}"
                         HorizontalOptions="Start">
-                    <Label x:Name="ItemCountCompleted" 
+                    <Label Text="{Binding ItemsCompletedCount_Label}" 
                            TextColor="{StaticResource PrimaryTextColor}"
                            FontSize="Medium"
                            Padding="10,0"/>
@@ -38,12 +40,12 @@
                         Text="Clear completed"
                         CornerRadius="15"
                         HorizontalOptions="End"
-                        Clicked="Button_ClearCompleted_Clicked">
+                        Command="{Binding ButtonClearCompletedCommand}">
                 </Button>
             </Grid>
 
             <!--Task List-->
-            <ListView x:Name="ToDoItemsCompleted" VerticalOptions="FillAndExpand">
+            <ListView ItemsSource="{Binding ToDoItemsCompleted_ListView}" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -57,8 +59,13 @@
                                     <!-- CheckBox -->
                                     <CheckBox Grid.Column="0" 
                                               IsChecked="{Binding StatusCompleted}" 
-                                              VerticalOptions="Center"
-                                              CheckedChanged="CheckBox_TaskStatus_CheckedChanged">
+                                              VerticalOptions="Center">
+                                        <CheckBox.Behaviors>
+                                            <Behaviors:CheckBoxCheckedChangedBehavior
+                                                Command="{Binding Source={x:Reference MyCompletedTasksPage},
+                                                          Path =BindingContext.CheckBoxChangedCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </CheckBox.Behaviors>
                                     </CheckBox>
 
                                     <!-- Task Description -->

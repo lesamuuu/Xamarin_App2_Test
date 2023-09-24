@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using toDoCheck.Models;
+﻿using toDoCheck.ViewModels;
 using Xamarin.Forms;
 
 namespace toDoCheck.Views
@@ -11,33 +8,14 @@ namespace toDoCheck.Views
         public ActiveTasksPage ()
 		{
 			InitializeComponent ();
+            BindingContext = new ActiveTasksPageViewModel();
 		}
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            LoadActiveItems();
-        }
-
-        private async void LoadActiveItems()
-        {
-            var items = await App.Context.GetItemsAsync();
-            ToDoItemsActive.ItemsSource = items.Where(x => x.StatusCompleted == false).ToList();
-            ItemCountActive.Text = items.Count(x => x.StatusCompleted == false).ToString() + " Items";
-        }
-
-        async void CheckBox_TaskStatus_CheckedChanged(object sender, CheckedChangedEventArgs e)
-        {
-            var checkbox = (CheckBox)sender;
-            if (checkbox.BindingContext is ToDoItem item)
-            {
-                item.StatusCompleted = e.Value;
-                var result = await App.Context.ModifyItemAsync(item);
-                if (result != 1)
-                {
-                    await DisplayAlert("Error", "Could not update the Task' Status", "Accept");
-                }
-            }
+            var viewModel = BindingContext as ActiveTasksPageViewModel;
+            viewModel?.OnAppearing();
         }
     }
 }

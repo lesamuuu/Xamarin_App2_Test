@@ -2,7 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Behaviors="clr-namespace:toDoCheck.Views.Behaviors"
     Title="To Do"
+    x:Name="MyHomePage"
     x:Class="toDoCheck.Views.HomePage">
 
     <ContentPage.Content>
@@ -16,13 +18,20 @@
                 HasShadow="true" 
                 Padding="0" 
                 BackgroundColor="{StaticResource SurfaceColor}">
-                <Entry x:Name="TaskDescription" 
+                <Entry
+                   Text="{Binding TaskDescription}"
                    Placeholder="Insert your task here" 
                    Margin="10,0" 
-                   Completed="TaskDescription_Completed" 
                    BackgroundColor="{StaticResource SurfaceColor}"
                    TextColor="{StaticResource PrimaryTextColor}"
-                   PlaceholderColor="{StaticResource SecondaryTextColor}"/>
+                   PlaceholderColor="{StaticResource SecondaryTextColor}"
+                   >
+                    <Entry.Behaviors>
+                        <!--<Behaviors:EntryCompletedBehavior Command="{Binding EntryCompletedCommand}" />-->
+                        <Behaviors:EntryCompletedBehavior Command="{Binding Source={x:Reference MyHomePage}, Path=BindingContext.EntryCompletedCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+
             </Frame>
 
             <Grid>
@@ -41,7 +50,7 @@
                         VerticalOptions="Center"
                         BackgroundColor="{StaticResource PrimaryLightColor}"
                         HorizontalOptions="Start">
-                    <Label x:Name="ItemCount" 
+                    <Label Text="{Binding ItemsCount_Label}"
                            TextColor="{StaticResource PrimaryTextColor}"
                            FontSize="Medium"
                            Padding="10,0"/>
@@ -52,14 +61,14 @@
                         Text="Clear completed"
                         CornerRadius="15"
                         HorizontalOptions="End"
-                        Clicked="Button_ClearCompleted_Clicked">
+                        Command="{Binding ButtonClearCompletedCommand}">
                 </Button>
             </Grid>
             
             
 
             <!--Task List-->
-            <ListView x:Name="ToDoItems" VerticalOptions="FillAndExpand">
+            <ListView ItemsSource="{Binding ToDoItems_ListView}" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -73,8 +82,13 @@
                                     <!-- CheckBox -->
                                     <CheckBox Grid.Column="0" 
                                               IsChecked="{Binding StatusCompleted}" 
-                                              VerticalOptions="Center"
-                                              CheckedChanged="CheckBox_TaskStatus_CheckedChanged">
+                                              VerticalOptions="Center">
+                                        <CheckBox.Behaviors>
+                                            <Behaviors:CheckBoxCheckedChangedBehavior
+                                                Command="{Binding Source={x:Reference MyHomePage},
+                                                          Path =BindingContext.CheckBoxChangedCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </CheckBox.Behaviors>
                                     </CheckBox>
 
                                     <!-- Task Description -->
