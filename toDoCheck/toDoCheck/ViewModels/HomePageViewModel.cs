@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using toDoCheck.Models;
-using toDoCheck.Models.Converters.CheckBoxConverter;
 using toDoCheck.Services;
+using toDoCheck.Views.Behaviors;
 using Xamarin.Forms;
 
 namespace toDoCheck.ViewModels
@@ -13,32 +13,32 @@ namespace toDoCheck.ViewModels
 	public class HomePageViewModel : INotifyPropertyChanged
 	{
 
-        public ICommand TaskDescriptionCompletedCommand { get; private set; }
-        public ICommand TaskStatusChangedCommand { get; private set; }
-        public ICommand ClearCompletedCommand { get; private set; }
+        public ICommand EntryCompletedCommand { get; private set; }
+        public ICommand CheckBoxChangedCommand { get; private set; }
+        public ICommand ButtonClearCompletedCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        private List<ToDoItem> _toDoItem_ListView;
-        public List<ToDoItem> ToDoItem_ListView // Binded
+        private List<ToDoItem> _toDoItems_ListView;
+        public List<ToDoItem> ToDoItems_ListView // Binded
         {
-            get { return _toDoItem_ListView; }
+            get { return _toDoItems_ListView; }
             set
             {
-                _toDoItem_ListView = value;
-                OnPropertyChanged(nameof(ToDoItem_ListView));
+                _toDoItems_ListView = value;
+                OnPropertyChanged(nameof(ToDoItems_ListView));
             }
         }
 
-        private string _itemCount_Label;
-        public string ItemCount_Label // Binded
+        private string _itemsCount_Label;
+        public string ItemsCount_Label // Binded
         {
-            get { return _itemCount_Label; }
+            get { return _itemsCount_Label; }
             set
             {
-                _itemCount_Label = value;
-                OnPropertyChanged(nameof(_itemCount_Label));
+                _itemsCount_Label = value;
+                OnPropertyChanged(nameof(ItemsCount_Label));
             }
         }
 
@@ -57,9 +57,9 @@ namespace toDoCheck.ViewModels
         // Methods
         public HomePageViewModel()
 		{
-            TaskDescriptionCompletedCommand = new Command<string>(TaskDescription_Completed);
-            TaskStatusChangedCommand = new Command<CheckBoxChangedData>(TaskStatusChanged);
-            ClearCompletedCommand = new Command(ClearCompleted);
+            EntryCompletedCommand = new Command(OnEntryCompleted);
+            CheckBoxChangedCommand = new Command<CheckBoxChangedEventArgs>(OnCheckBoxChanged);
+            ButtonClearCompletedCommand = new Command(OnButtonClearCompletedCommand);
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -74,17 +74,22 @@ namespace toDoCheck.ViewModels
 
         private async void LoadItems()
         {
-            ToDoItem_ListView = await DependencyService.Get<ToDoItemDBService>().GetItemsAsync();
-            
-            ItemCount_Label = ToDoItem_ListView.Count.ToString() + " Items";
+            ToDoItems_ListView = await DependencyService.Get<ToDoItemDBService>().GetItemsAsync();
+
+            ItemsCount_Label = ToDoItems_ListView.Count.ToString() + " Items";
         }
 
-        private async void TaskDescription_Completed(string description)
+        private async void OnEntryCompleted()
         {
 
             try
             {
-                var toDoItem = new ToDoItem(description);
+                // Check the entry is not empty
+                if (TaskDescription is null)
+                {
+                    return;
+                }
+                var toDoItem = new ToDoItem(TaskDescription);
 
                 var result = await DependencyService.Get<ToDoItemDBService>().InsertItemAsync(toDoItem);
 
@@ -104,13 +109,12 @@ namespace toDoCheck.ViewModels
             }
         }
 
-        async void TaskStatusChanged(CheckBoxChangedData data)
+
+
+        async void OnCheckBoxChanged(CheckBoxChangedEventArgs args)
         {
-
-            //item.StatusCompleted = 
-
-            ToDoItem item = data.Item;
-            item.StatusCompleted = data.IsChecked;
+            ToDoItem item = args.Parameter as ToDoItem;
+            item.StatusCompleted = args.IsChecked;
 
             var result = await DependencyService.Get<ToDoItemDBService>().ModifyItemAsync(item);
             if (result != 1)
@@ -120,9 +124,15 @@ namespace toDoCheck.ViewModels
         }
 
 
-        async void ClearCompleted()
+        async void OnButtonClearCompletedCommand()
         {
-            List<ToDoItem> items = ToDoItem_ListView;
+            // Check the list is not empty
+            if (ToDoItems_ListView is null)
+            {
+                return;
+            }
+
+            List<ToDoItem> items = ToDoItems_ListView;
 
             var checked_items = items.Where(x => x.StatusCompleted == true);
 
@@ -148,6 +158,6 @@ namespace toDoCheck.ViewModels
             }
         }
     
-}
+    }
 }
 
