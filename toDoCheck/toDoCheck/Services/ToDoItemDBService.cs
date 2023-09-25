@@ -12,15 +12,15 @@ namespace toDoCheck.Services
         public SQLiteAsyncConnection Connection { get; set; }
 
 
-        public ToDoItemDBService()
-		{
-            InitializeDatabase();
+        public ToDoItemDBService(string dbName = "ToDoItems.db3", bool isTest = false)
+        {
+            InitializeDatabase(dbName, isTest);
         }
 
-        private void InitializeDatabase()
+        private void InitializeDatabase(string dbName, bool isTest)
         {
-            var folderApp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbPath = System.IO.Path.Combine(folderApp, "ToDoItems.db3");
+            var folderApp = isTest ? Environment.CurrentDirectory : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var dbPath = System.IO.Path.Combine(folderApp, dbName);
 
             Connection = new SQLiteAsyncConnection(dbPath);
             Connection.CreateTableAsync<ToDoItem>().Wait();
