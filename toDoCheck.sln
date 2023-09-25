@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toDoCheck.Android", "toDoCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toDoCheck", "toDoCheck\toDoCheck\toDoCheck.csproj", "{AEA98D6E-E6DD-47C0-8020-E07CC925D8C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoCheckTestProject", "ToDoCheckTestProject\ToDoCheckTestProject.csproj", "{51052898-4625-4BAF-84AF-5A8687390DBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AEA98D6E-E6DD-47C0-8020-E07CC925D8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEA98D6E-E6DD-47C0-8020-E07CC925D8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEA98D6E-E6DD-47C0-8020-E07CC925D8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51052898-4625-4BAF-84AF-5A8687390DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51052898-4625-4BAF-84AF-5A8687390DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51052898-4625-4BAF-84AF-5A8687390DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51052898-4625-4BAF-84AF-5A8687390DBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
