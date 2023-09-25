@@ -11,12 +11,13 @@ namespace toDoCheck.Services
 
         public SQLiteAsyncConnection Connection { get; set; }
 
+        public ToDoItemDBService() : this("ToDoItems.db3", false) { }
 
         public ToDoItemDBService(string dbName = "ToDoItems.db3", bool isTest = false)
         {
             InitializeDatabase(dbName, isTest);
         }
-
+        
         private void InitializeDatabase(string dbName, bool isTest)
         {
             var folderApp = isTest ? Environment.CurrentDirectory : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
