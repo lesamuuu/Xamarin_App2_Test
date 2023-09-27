@@ -1,4 +1,3 @@
-/Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/CoverletSourceRootsMapping
 /Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/NUnit3.TestAdapter.dll
 /Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/NUnit3.TestAdapter.pdb
 /Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/nunit.engine.dll
@@ -127,3 +126,4 @@
 /Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/runtimes/maccatalyst-arm64/native/libe_sqlite3.dylib
 /Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/runtimes/maccatalyst-x64/native/libe_sqlite3.dylib
 /Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/runtimes/osx-arm64/native/libe_sqlite3.dylib
+/Users/samuel/Projects/ToDoCheck/ToDoCheckTestProject/bin/Debug/net7.0/CoverletSourceRootsMapping_ToDoCheckTestProject
