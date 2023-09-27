@@ -60,7 +60,7 @@ namespace toDoCheck.ViewModels
 
         private async void LoadActiveItems()
         {
-            var items = await DependencyService.Get<ToDoItemDBService>().GetItemsAsync();
+            var items = await DependencyService.Get<ToDoItemDBService<ToDoItem>>().GetItemsAsync();
             ToDoItemActive_ListView = items.Where(x => x.StatusCompleted == false).ToList();
             ItemsCountActive_Label = ToDoItemActive_ListView.Count.ToString() + " Items";
         }
@@ -70,7 +70,7 @@ namespace toDoCheck.ViewModels
             ToDoItem item = args.Parameter as ToDoItem;
             item.StatusCompleted = args.IsChecked;
 
-            var result = await DependencyService.Get<ToDoItemDBService>().ModifyItemAsync(item);
+            var result = await DependencyService.Get<ToDoItemDBService<ToDoItem>>().UpdateItemAsync(item);
             if (result != 1)
             {
                 await DependencyService.Get<DialogService>().DisplayCustomAlert("Error", "Could not save the task", "Accept");

@@ -58,7 +58,7 @@ namespace toDoCheck.ViewModels
 
         private async void LoadCompletedItems()
         {
-            var items = await DependencyService.Get<ToDoItemDBService>().GetItemsAsync();
+            var items = await DependencyService.Get<ToDoItemDBService<ToDoItem>>().GetItemsAsync();
             ToDoItemsCompleted_ListView = items.Where(x => x.StatusCompleted == true).ToList();
             ItemsCompletedCount_Label = ToDoItemsCompleted_ListView.Count.ToString() + " Items";
         }
@@ -68,7 +68,7 @@ namespace toDoCheck.ViewModels
             ToDoItem item = args.Parameter as ToDoItem;
             item.StatusCompleted = args.IsChecked;
 
-            var result = await DependencyService.Get<ToDoItemDBService>().ModifyItemAsync(item);
+            var result = await DependencyService.Get<ToDoItemDBService<ToDoItem>>().UpdateItemAsync(item);
             if (result != 1)
             {
                 await DependencyService.Get<DialogService>().DisplayCustomAlert("Error", "Could not save the task", "Accept");
@@ -96,7 +96,7 @@ namespace toDoCheck.ViewModels
 
                 foreach (var item in checked_items)
                 {
-                    var deleteResult = await DependencyService.Get<ToDoItemDBService>().DeleteItemAsync(item);
+                    var deleteResult = await DependencyService.Get<ToDoItemDBService<ToDoItem>>().DeleteItemAsync(item);
                     if (deleteResult == 1)
                     {
                         // If at least one register is deleted, reload the page

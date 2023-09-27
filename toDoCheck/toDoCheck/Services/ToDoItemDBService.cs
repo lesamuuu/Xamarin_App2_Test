@@ -3,67 +3,53 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SQLite;
 using toDoCheck.Models;
+using toDoCheck.Repositories;
 
 namespace toDoCheck.Services
 {
-    public class ToDoItemDBService : IToDoItemDB
-	{
+    //public class ToDoItemDBService
+    public class ToDoItemDBService<T> where T : new()
+    {
 
-        public SQLiteAsyncConnection Connection { get; set; }
+        private readonly IRepository<T> _repository;
 
-        public ToDoItemDBService() : this("ToDoItems.db3", false) { }
-
-        public ToDoItemDBService(string dbName = "ToDoItems.db3", bool isTest = false)
+        public ToDoItemDBService(IRepository<T> repository)
         {
-            InitializeDatabase(dbName, isTest);
+            _repository = repository;
         }
         
-        private void InitializeDatabase(string dbName, bool isTest)
-        {
-            var folderApp = isTest ? Environment.CurrentDirectory : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbPath = System.IO.Path.Combine(folderApp, dbName);
+        //private void InitializeDatabase(string dbName, bool isTest)
+        //{
+        //    var folderApp = isTest ? Environment.CurrentDirectory : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        //    var dbPath = System.IO.Path.Combine(folderApp, dbName);
 
-            Connection = new SQLiteAsyncConnection(dbPath);
-            Connection.CreateTableAsync<ToDoItem>().Wait();
+        //    Connection = new SQLiteAsyncConnection(dbPath);
+        //    Connection.CreateTableAsync<ToDoItem>().Wait();
+        //}
+
+        public async Task<int> InsertItemAsync(T item)
+        {
+            return await _repository.InsertAsync(item);
         }
 
-        public async Task<int> InsertItemAsync(ToDoItem item)
+        public async Task<int> UpdateItemAsync(T item)
         {
-            return await Connection.InsertAsync(item);
+            return await _repository.UpdateAsync(item);
         }
 
-        public async Task<int> InsertOrUpdateItemAsync(ToDoItem item)
+        public async Task<int> DeleteItemAsync(T item)
         {
-            var existingObject = await Connection.Table<ToDoItem>()
-                                             .Where(x => x.Id == item.Id)
-                                             .FirstOrDefaultAsync();
-
-            if (existingObject != null)
-            {
-                return await Connection.UpdateAsync(item);
-            }
-            else
-            {
-                return await Connection.InsertAsync(item);
-            }
+            return await _repository.DeleteAsync(item);
         }
 
-        public async Task<int> ModifyItemAsync(ToDoItem item)
+        public async Task<List<T>> GetItemsAsync()
         {
-            return await Connection.UpdateAsync(item);
+            return await _repository.GetAllAsync();
         }
 
-        public async Task<int> DeleteItemAsync(ToDoItem item)
+        public void Clear()
         {
-            return await Connection.DeleteAsync(item);
+            _repository.Clear();
         }
-
-        public async Task<List<ToDoItem>> GetItemsAsync()
-        {
-            return await Connection.Table<ToDoItem>().ToListAsync();
-        }
-
-        
     }
 }
-
