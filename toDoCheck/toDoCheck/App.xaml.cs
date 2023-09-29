@@ -22,8 +22,6 @@ namespace toDoCheck
             // Repository dependency
             DependencyService.RegisterSingleton(toDoItemDBService);
 
-
-            DependencyService.Register<ToDoItemDBService<ToDoItem>>();
             MainPage = new TaskTabs();
         }
 
