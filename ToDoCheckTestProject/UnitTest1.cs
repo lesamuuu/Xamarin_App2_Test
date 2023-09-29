@@ -1,5 +1,4 @@
 ﻿using toDoCheck.Services;
-using toDoCheck.Models;
 using toDoCheck.Repositories;
 
 namespace ToDoCheckTestProject;
@@ -54,21 +53,69 @@ public class Tests
     [Test]
     public async Task GetAllAsync_ShouldUpdateItem()
     {
-        for (int i = 0; i <= 2; i++)
+        const int numItems = 3;
+
+        for (int i = 1; i <= numItems; i++)
         {
             var item = new Foo { Name = "GetAll test " + i };
             var insertResult = await _DbService.InsertItemAsync(item);
         }
         
         var retrievedItems = await _DbService.GetItemsAsync();
-        Assert.That(retrievedItems.Count, Is.EqualTo(3));
+        Assert.That(retrievedItems.Count, Is.EqualTo(numItems));
 
-        for (int i = 0; i <= 2; i++)
+        for (int i = 1; i <= numItems; i++)
         {
-            Assert.That(retrievedItems[i].Name, Is.EqualTo("GetAll test " + i));
+            Assert.That(retrievedItems[i-1].Name, Is.EqualTo("GetAll test " + i));
         }
     }
 
+    [Test]
+    public async Task Search_ShouldReturnAll()
+    {
+        const int numItems = 3;
+        for (int i = 1; i <= numItems; i++)
+        {
+            var item = new Foo { Name = "Item test " + i };
+            var insertResult = await _DbService.InsertItemAsync(item);
+        }
+
+        List<Foo> retrievedList = await _DbService.Search("");
+
+        Assert.That(retrievedList.Count() == numItems);
+    }
+
+    [Test]
+    public async Task Search_ShouldReturnOneItem()
+    {
+        const int numItems = 3;
+        for (int i = 1; i <= numItems; i++)
+        {
+            var item = new Foo { Name = "Item test " + i };
+            var insertResult = await _DbService.InsertItemAsync(item);
+        }
+        
+
+        List<Foo> retrievedList = await _DbService.Search("1");
+
+        Assert.That(retrievedList.Count() == 1);
+    }
+
+    [Test]
+    public async Task Search_ShouldReturnThreeItems()
+    {
+        const int numItems = 3;
+        for (int i = 1; i <= numItems; i++)
+        {
+            var item = new Foo { Name = "Item test " + i };
+            var insertResult = await _DbService.InsertItemAsync(item);
+        }
+
+
+        List<Foo> retrievedList = await _DbService.Search("Item");
+
+        Assert.That(retrievedList.Count() == numItems);
+    }
 
     [TearDown]
     public void TearDown()
