@@ -9,6 +9,7 @@ namespace toDoCheck.Repositories
         Task<List<T>> GetAllAsync();
         Task<int> DeleteAsync(T item);
         Task<int> UpdateAsync(T item);
+        Task<List<T>> Search(string stringSearch);
         void Clear();
     }
 }

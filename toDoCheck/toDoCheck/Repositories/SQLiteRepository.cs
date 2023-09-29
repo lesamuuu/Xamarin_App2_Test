@@ -1,8 +1,8 @@
 ﻿using SQLite;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using toDoCheck.Models;
 
 namespace toDoCheck.Repositories
 {
@@ -39,6 +39,41 @@ namespace toDoCheck.Repositories
         public void Clear()
         {
 
+        }
+
+        public async Task<List<T>> Search(string searchedValue)
+        {
+            List<T> allItems = await GetAllAsync();
+            List<T> returnedItems = new List<T>();
+
+            // If seacehedValue is null, we return all items
+            if (string.IsNullOrEmpty(searchedValue))
+            {
+                returnedItems = allItems;
+            }
+            else
+            {
+                // Gets all string properties
+                var stringProperties = typeof(T).GetProperties()
+                                        .Where(p => p.PropertyType == typeof(string))
+                                        .ToList();
+
+                searchedValue = searchedValue.ToLower();
+
+                foreach (T item in allItems)
+                {
+                    foreach (PropertyInfo property in stringProperties)
+                    {
+                        string value = property.GetValue(item).ToString().ToLower();
+                        if (!string.IsNullOrEmpty(value) && value.Contains(searchedValue))
+                        {
+                            // If property contains searchedValue, returns it
+                            returnedItems.Add(item);
+                        }
+                    }
+                }
+            }
+            return returnedItems;
         }
     }
 

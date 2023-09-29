@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SQLite;
-using toDoCheck.Models;
 using toDoCheck.Repositories;
 
 namespace toDoCheck.Services
 {
-    //public class ToDoItemDBService
     public class ToDoItemDBService<T> where T : new()
     {
 
@@ -17,15 +13,6 @@ namespace toDoCheck.Services
         {
             _repository = repository;
         }
-        
-        //private void InitializeDatabase(string dbName, bool isTest)
-        //{
-        //    var folderApp = isTest ? Environment.CurrentDirectory : Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        //    var dbPath = System.IO.Path.Combine(folderApp, dbName);
-
-        //    Connection = new SQLiteAsyncConnection(dbPath);
-        //    Connection.CreateTableAsync<ToDoItem>().Wait();
-        //}
 
         public async Task<int> InsertItemAsync(T item)
         {
@@ -45,6 +32,11 @@ namespace toDoCheck.Services
         public async Task<List<T>> GetItemsAsync()
         {
             return await _repository.GetAllAsync();
+        }
+
+        public async Task<List<T>> Search(string searchedValue)
+        {
+            return await _repository.Search(searchedValue);
         }
 
         public void Clear()
