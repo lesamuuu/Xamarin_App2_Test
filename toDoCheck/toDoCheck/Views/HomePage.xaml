@@ -64,7 +64,10 @@
                         Command="{Binding ButtonClearCompletedCommand}">
                 </Button>
             </Grid>
-            
+
+            <Frame Padding="0" CornerRadius="10" HasShadow="True" BackgroundColor="{StaticResource SurfaceColor}">
+                    <SearchBar Text="{Binding Text_SearchBar}" Placeholder="Search items"> </SearchBar>
+             </Frame>
             
 
             <!--Task List-->

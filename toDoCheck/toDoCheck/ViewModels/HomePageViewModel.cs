@@ -53,6 +53,19 @@ namespace toDoCheck.ViewModels
             }
         }
 
+        private string _text_SearchBar;
+        public string Text_SearchBar // Binded
+        {
+            get { return _text_SearchBar; }
+            set
+            {
+                _text_SearchBar = value;
+                OnPropertyChanged(nameof(Text_SearchBar));
+
+                SearchItem();
+            }
+        }
+
 
         // Methods
         public HomePageViewModel()
@@ -123,6 +136,10 @@ namespace toDoCheck.ViewModels
             }
         }
 
+        async void SearchItem()
+        {
+            ToDoItems_ListView = await DependencyService.Get<ToDoItemDBService<ToDoItem>>().Search(Text_SearchBar);
+        }
 
         async void OnButtonClearCompletedCommand()
         {
